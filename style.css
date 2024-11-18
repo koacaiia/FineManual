@@ -1,0 +1,18 @@
+.tablist {
+    display: flex;
+  }
+  
+  [role="tab"] {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  [role="tabpanel"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+  }
+.bi{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FineManual</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="height:100vh;display:grid;grid-template-rows:1.5fr 0.3fr 7fr">
+    <div style="width:100">
+        <h1>FineManual</h1>
+        <div style="display:grid;grid-template-columns:2fr 1fr">
+            <select name="category" id="category">
+                <option value="1">Category 1</option>
+                <option value="2">Category 2</option>
+                <option value="3">Category 3</option>
+            </select>
+            <button>검색</button>
+        </div>
+        
+        <div>
+            <button>신규 등록</button>
+        </div>
+    </div>
+    <div class="tablist" role="tablist">
+        <button role="tab" aria-selected="true" aria-controls="panel1" id="tab1">업체기본정보</button>
+        <button role="tab" aria-selected="false" aria-controls="panel2" id="tab2">입고</button>
+        <button role="tab" aria-selected="false" aria-controls="panel3" id="tab3">출고</button>
+        <button role="tab" aria-selected="false" aria-controls="panel4" id="tab4">정산</button>
+      </div>
+      
+      <div role="tabpanel" id="panel1" aria-labelledby="tab1">
+        <h2>업체기본정보</h2>
+        <div>
+            <div class="bi">
+                <h4>업체명</h4>
+                <input type="text" id="biClientName">
+            </div>
+            <div class="bi">
+                <h4>업체 사업자 등록번호</h4>
+                <input type="text" id="biClientNo">
+            </div>
+            <div class="bi">
+                <h4>업체 대표자</h4>
+                <input type="text" id="biCeoName">
+            </div>
+            <div class="bi">
+                <h4>업체 주소</h4>
+                <input type="text" id="biAddress">
+            </div>
+            <div class="bi">
+                <h4>업체 운영화물</h4>
+                <input type="text" id="biCargoName">
+            </div>
+            <div style="display:grid;grid-template-rows:1fr 3fr">
+                <h4>업체 운영참고사항</h4>
+                <input type="text" id="biRemark">
+            </div>
+        </div>
+        
+        </div>
+        
+      </div>
+      <div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>Content for Tab 2</div>
+      <div role="tabpanel" id="panel3" aria-labelledby="tab3" hidden>Content for Tab 3</div>
+      <div role="tabpanel" id="panel4" aria-labelledby="tab4" hidden>Content for Tab 4</div>
+    </body>
+<script>
+    // const regPass = prompt('비밀번호를 입력하세요');
+    // if(regPass != '1234'){
+    //     alert('비밀번호가 일치하지 않습니다.');
+    //     location.href = 'index.html';
+    // }
+    document.querySelector('button').addEventListener('click', function(){
+        var category = document.querySelector('#category').value;
+        if(category == 0){
+            location.href = 'new.php';
+        }else{
+            location.href = 'list.php?category=' + category;
+        }
+    });
+    document.querySelectorAll('[role="tab"]').forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Deselect all tabs
+    document.querySelectorAll('[role="tab"]').forEach(t => {
+      t.setAttribute('aria-selected', 'false');
+    });
+
+    // Hide all tab panels
+    document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+      panel.hidden = true;
+    });
+
+    // Select the clicked tab
+    tab.setAttribute('aria-selected', 'true');
+
+    // Show the associated tab panel
+    const panelId = tab.getAttribute('aria-controls');
+    document.getElementById(panelId).hidden = false;
+  });
+});
+</script>
+    
+
+</html>
