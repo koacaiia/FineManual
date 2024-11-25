@@ -16,3 +16,6 @@
     display:grid;
     grid-template-columns: 1fr 1fr;
 }
+h4, h2{
+  text-align: center;
+}
