@@ -19,3 +19,17 @@
 h4, h2{
   text-align: center;
 }
+#pasteArea {
+  width: 300px;
+  height: 200px;
+  border: 2px dashed #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 20px;
+}
+#imageContainer img {
+  max-width: 100%;
+  max-height: 100%;
+}

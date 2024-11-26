@@ -65,37 +65,50 @@
         
       </div>
       <div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>
-        <div style="display:grid;grid-template-columns:3fr 1fr">
-            <h2>입고업무 진행절차</h2>
-            <button>입고업무 진행절차 등록</button>
-        </div>
-
-        <div>
             <div class="bi">
                 <h4>업체명</h4>
                 <input type="text" id="biClientName">
             </div>
-            <div class="bi">
-                <h4>업체 사업자 등록번호</h4>
-                <input type="text" id="biClientNo">
+            <div class="bi_manager">
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </form>
+                
+                <form>
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                    <small>Format: 123-456-7890</small>
+                </form>
+                
+                <form>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <!-- <button type="submit">Submit</button> -->
+                </form>
             </div>
-            <div class="bi">
-                <h4>업체 대표자</h4>
-                <input type="text" id="biCeoName">
-            </div>
-            <div class="bi">
-                <h4>업체 주소</h4>
-                <input type="text" id="biAddress">
-            </div>
-            <div class="bi">
-                <h4>업체 운영화물</h4>
-                <input type="text" id="biCargoName">
-            </div>
-            <div style="display:grid;grid-template-rows:1fr 3fr">
-                <h4>업체 운영참고사항</h4>
-                <input type="text" id="biRemark">
-            </div>
-        </div></div>
+            <div class="tableDiv">
+                <div class="tableDivBtn" style="display:grid;grid-template-columns:3fr 1fr 1fr 2fr;column-gap:3px">
+                    <h2>입고업무 진행절차</h2>
+                    <button onclick="addEvent()">입고업무 진행절차 추가</button>
+                    <button>입고업무 진행절차 삭제</button>
+                    <button>입고업무 진행절차 등록</button>
+                </div>
+                <div class="tableDivTable">
+                    <table class="flowTable" id="flowTableI">
+                        <tbody>
+                            <tr>
+                                <div class="tableDiv">
+                                    <input type="text">
+                                    <div id="pasteArea">Paste your image here</div>
+                                    <div id="imageContainer"></div>
+                                </div>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
       <div role="tabpanel" id="panel3" aria-labelledby="tab3" hidden>
         <div style="display:grid;grid-template-columns:3fr 1fr">
             <h2>출고업무 진행절차</h2>
