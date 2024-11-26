@@ -10,11 +10,14 @@
   [role="tabpanel"] {
     border: 1px solid #ccc;
   }
-.bi{
+  .bi{
+    border:1px solid black;
+    border-radius:5px;
+    margin:1px;
     display:grid;
     grid-template-columns: 1fr 1fr;
-    height:5vh;
-}
+    column-gap:10px;
+  }
 h4, h6{
   text-align: center;
   margin:0;
@@ -50,14 +53,7 @@ h4, h6{
   display:grid;
   grid-template-rows:1fr 1fr 10fr;
 }
-.bi{
-  border:1px solid black;
-  border-radius:5px;
-  margin:1px;
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap:10px;
-}
+
 .bi input{
   margin-top:2px;
   margin-right:5px;
