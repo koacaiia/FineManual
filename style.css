@@ -24,14 +24,15 @@ h4, h6{
   margin-top:3px;
 }
 .pasteArea {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed #ccc;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #8863e6;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 20px;
+  overflow: hidden;
+  position: relative;
 }
 #imageContainer img {
   max-width: 100%;
@@ -39,23 +40,52 @@ h4, h6{
 }
 .tdSelected{
   border:1px solid red;
-}
-.bi_manager{
-  display:grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap:3px;
+  background-color: rgb(241, 103, 12, 0.2);
+  
 }
 .tableDiv{
   display:grid;
-  grid-template-rows:1fr 9fr;
+  grid-template-rows:18vh 35vh 6vh;
+  margin:10px;
 }
 .tabDiv{
   display:grid;
-  grid-template-rows:1fr 1fr 10fr;
+  grid-template-rows:5vh 12vh 60vh;
+  row-gap: 5px;
 }
 
 .bi input{
   margin-top:2px;
   margin-right:5px;
   height:65%;
+  }
+.bi_title{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr ;
+  column-gap:10px;
+}
+.bi_manager{
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  width:100%;
+}
+.bi_manager div{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+}
+.flowTableTd{
+  width:32vw;
+}
+.pasteArea img {
+  width: 100%;
+  height: 100%;
+  object-fit:"scale";
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.pasteBtn{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+  column-gap:2px;
 }

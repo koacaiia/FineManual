@@ -64,46 +64,73 @@
       </div>
       <div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>
         <div class="tabDiv">
-            <div class="bi">
-                <h4>업체명</h4>
-                <input type="text" id="biClientName">
+            <div class="bi_title">
+                <select name="category" id="category">
+                    <option value="1">Category 1</option>
+                    <option value="2">Category 2</option>
+                    <option value="3">Category 3</option>
+                </select>
+                <h4 >입고업무 진행상황</h4>
+                
+                <button>입고업무 진행절차 등록</button>
             </div>
             <div class="bi_manager">
-                <form>
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </form>
-                
-                <form>
-                    <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
-                    <small>Format: 123-456-7890</small>
-                </form>
-                
-                <form>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                    <!-- <button type="submit">Submit</button> -->
-                </form>
+                <div >Main 담당자
+                    <form>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
+                </div>
+                <div >Sub 담당자
+                    <form>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
+                </div>
+               
             </div>
             <div class="tableDiv">
-                <div class="tableDivBtn" style="display:grid;grid-template-columns:3fr 1fr 1fr 2fr;column-gap:3px">
-                    <h2>입고업무 진행절차</h2>
-                    <button onclick="addEvent()">입고업무 진행절차 추가</button>
-                    <button onclick="delEvent()">입고업무 진행절차 삭제</button>
-                    <button>입고업무 진행절차 등록</button>
-                </div>
                 <div class="tableDivTable">
                     <table class="flowTable" id="flowTableI">
                         <tbody>
                             <tr>
-                                <td>
+                                <td class="flowTableTd">
                                     <div class="tableDiv">
-                                        <input type="text">
-                                        <div class="pasteArea">Paste your image here</div>
+                                        <textarea class="pasteInput" type="text" placeholder="업무절차 상황 입력"></textarea>
+                                        <div class="pasteArea">Window Key+Shift Key+ S Key<br>으로 클립보드 저장된 이미지</div>
+                                        <div class="pasteBtn">
+                                            <button onclick="addEvent()">입고업무 추가</button>
+                                            <button onclick="delEvent()">입고업무 삭제</button>
+                                            <button onclick="delImg()">Img 삭제</button>
+                                            <button onclick="detailImg()">Img 자세히</button>
+                                        </div>
+                                        </div>
                                     </div>
                                 </td>
-                                
                             </tr>
                         </tbody>
                     </table>
