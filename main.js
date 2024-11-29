@@ -30,7 +30,7 @@ function addEvent(){
     const td=document.createElement('td');
     td.classList.add("flowTableTd");
     const div=document.createElement('div');
-    div.classList.add("tableDiv");
+    div.classList.add("tdDiv");
     const input=document.createElement('textarea');
     input.classList.add("pasteInput");
     input.placeholder="이미지를 붙여넣으세요";

@@ -71,7 +71,10 @@
                     <option value="3">Category 3</option>
                 </select>
                 <h4 >입고업무 진행상황</h4>
-                
+                <button onclick="addEvent()">입고업무 추가</button>
+                <button onclick="delEvent()">입고업무 삭제</button>
+                <button onclick="delImg()">Img 삭제</button>
+                <button onclick="detailImg()">Img 자세히</button>
                 <button>입고업무 진행절차 등록</button>
             </div>
             <div class="bi_manager">
@@ -114,31 +117,23 @@
                
             </div>
             <div class="tableDiv">
-                <div class="tableDivTable">
                     <table class="flowTable" id="flowTableI">
                         <tbody>
                             <tr>
                                 <td class="flowTableTd">
-                                    <div class="tableDiv">
+                                    <div class="tdDiv">
                                         <textarea class="pasteInput" type="text" placeholder="업무절차 상황 입력"></textarea>
                                         <div class="pasteArea">Window Key+Shift Key+ S Key<br>으로 클립보드 저장된 이미지</div>
-                                        <div class="pasteBtn">
-                                            <button onclick="addEvent()">입고업무 추가</button>
-                                            <button onclick="delEvent()">입고업무 삭제</button>
-                                            <button onclick="delImg()">Img 삭제</button>
-                                            <button onclick="detailImg()">Img 자세히</button>
+                                        
                                         </div>
-                                        </div>
-                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                </div>
-        </div>
+            </div>
+          </div>
         </div>
             
-    </div>
       <div role="tabpanel" id="panel3" aria-labelledby="tab3" hidden>
         <div class="tabDiv">
             <div style="display:grid;grid-template-columns:3fr 1fr">
