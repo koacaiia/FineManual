@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,19 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FineManual</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-messaging-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
 <body style="height:97vh;display:grid;grid-template-rows:8vh 6vh 80vh">
-    <div style="display:grid;grid-template-columns:1fr 3fr ;width:100%;height:5vh;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr ;width:100%;height:5vh;">
         <h7>FineManual</h7>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;column-gap:1vw">
-            <select name="category" id="category">
-                <option value="1">Category 1</option>
-                <option value="2">Category 2</option>
-                <option value="3">Category 3</option>
+            <select id="clientName">
+                <option value="1">업체명</option>
+                
             </select>
-            <button>검색</button>
-            <button>신규 등록</button>
-        </div>
+            <button onclick="searchInit()">조회</button>
+            <button onclick="submitUpLoad(this)">등록</button>
     </div>
     <div class="tablist" role="tablist">
         <button role="tab" aria-selected="true" aria-controls="panel1" id="tab1">업체기본정보</button>
@@ -30,7 +35,7 @@
         <div style="display:grid;grid-template-rows:5vh 70vh;row-gap:1vh">
         <div style="display:grid;grid-template-columns:3fr 1fr">
             <h4 style="margin:0;text-align: center;">업체기본정보</h4>
-            <button>업체 기본정보 등록</button>
+            <button class="submitUpLoad" onclick="submitUpLoad(this)">업체 기본정보 등록</button>
         </div>
         <div style="display:grid;grid-template-rows:7vh 7vh 7vh 7vh 7vh 40vh;">
             <div class="bi">
@@ -65,51 +70,45 @@
       <div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>
         <div class="tabDiv">
             <div class="bi_title">
-                <select name="category" id="category">
-                    <option value="1">Category 1</option>
-                    <option value="2">Category 2</option>
-                    <option value="3">Category 3</option>
-                </select>
                 <h4 >입고업무 진행상황</h4>
                 <button onclick="addEvent()">입고업무 추가</button>
                 <button onclick="delEvent()">입고업무 삭제</button>
                 <button onclick="delImg()">Img 삭제</button>
                 <button onclick="detailImg()">Img 자세히</button>
-                <button>입고업무 진행절차 등록</button>
             </div>
             <div class="bi_manager">
-                <div >Main 담당자
+                <div >
                     <form>
-                        <label for="name">Name:</label>
+                        <label for="name">Main 담당자 Name:</label>
                         <input type="text" id="name" name="name" required>
                     </form>
                     
                     <form>
-                        <label for="phone">Phone:</label>
+                        <label for="phone">Main 담당자 Phone:</label>
                         <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
                         <small>Format: 123-456-7890</small>
                     </form>
                     
                     <form>
-                        <label for="email">Email:</label>
+                        <label for="email">Main 담당자 Email:</label>
                         <input type="email" id="email" name="email" required>
                         <!-- <button type="submit">Submit</button> -->
                     </form>
                 </div>
-                <div >Sub 담당자
+                <div >
                     <form>
-                        <label for="name">Name:</label>
+                        <label for="name">Sub  담당자 Name:</label>
                         <input type="text" id="name" name="name" required>
                     </form>
                     
                     <form>
-                        <label for="phone">Phone:</label>
+                        <label for="phone">Sub  담당자 Phone:</label>
                         <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
                         <small>Format: 123-456-7890</small>
                     </form>
                     
                     <form>
-                        <label for="email">Email:</label>
+                        <label for="email">Sub  담당자 Email:</label>
                         <input type="email" id="email" name="email" required>
                         <!-- <button type="submit">Submit</button> -->
                     </form>
@@ -117,7 +116,7 @@
                
             </div>
             <div class="tableDiv">
-                    <table class="flowTable" id="flowTableI">
+                    <table class="flowTable">
                         <tbody>
                             <tr>
                                 <td class="flowTableTd">
@@ -136,104 +135,163 @@
             
       <div role="tabpanel" id="panel3" aria-labelledby="tab3" hidden>
         <div class="tabDiv">
-            <div style="display:grid;grid-template-columns:3fr 1fr">
-                <h2>출고업무 진행절차</h2>
-                <button>출고업무 진행절차 등록</button>
+            <div class="bi_title">
+                
+                <h4 >출고업무 진행상황</h4>
+                <button onclick="addEvent()">출고업무 추가</button>
+                <button onclick="delEvent()">출고업무 삭제</button>
+                <button onclick="delImg()">Img 삭제</button>
+                <button onclick="detailImg()">Img 자세히</button>
             </div>
-            <div>
-                <div class="bi">
-                    <h4 class="ClinetName">업체명</h4>
-                    <input type="text" id="biClientName">
+            <div class="bi_manager">
+                <div >
+                    <form>
+                        <label for="name">Main 담당자 Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Main 담당자 Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Main 담당자 Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
                 </div>
-                <div class="bi">
-                    <h4>업체 사업자 등록번호</h4>
-                    <input type="text" id="biClientNo">
+                <div >
+                    <form>
+                        <label for="name">Sub  담당자 Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Sub  담당자 Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Sub  담당자 Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
                 </div>
-                <div class="bi">
-                    <h4>업체 대표자</h4>
-                    <input type="text" id="biCeoName">
-                </div>
-                <div class="bi">
-                    <h4>업체 주소</h4>
-                    <input type="text" id="biAddress">
-                </div>
-                <div class="bi">
-                    <h4>업체 운영화물</h4>
-                    <input type="text" id="biCargoName">
-                </div>
-                <div style="display:grid;grid-template-rows:1fr 3fr">
-                    <h4>업체 운영참고사항</h4>
-                    <input type="text" id="biRemark">
-                </div>
-        </div>
-        
-        </div></div>
+               
+            </div>
+            <div class="tableDiv">
+                    <table class="flowTable">
+                        <tbody>
+                            <tr>
+                                <td class="flowTableTd">
+                                    <div class="tdDiv">
+                                        <textarea class="pasteInput" type="text" placeholder="업무절차 상황 입력"></textarea>
+                                        <div class="pasteArea">Window Key+Shift Key+ S Key<br>으로 클립보드 저장된 이미지</div>
+                                        
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+          </div>
+          </div>
       <div role="tabpanel" id="panel4" aria-labelledby="tab4" hidden>
-        <div style="display:grid;grid-template-columns:3fr 1fr">
-            <h2>정산업무 진행절차</h2>
-            <button>정산업무 진행절차 등록</button>
+        <div class="tabDiv">
+            <div class="bi_title">
+                <h4 >정산업무 진행상황</h4>
+                <button onclick="addEvent()">정산업무 추가</button>
+                <button onclick="delEvent()">정산업무 삭제</button>
+                <button onclick="delImg()">Img 삭제</button>
+                <button onclick="detailImg()">Img 자세히</button>
+            </div>
+            <div class="bi_manager">
+                <div >
+                    <form>
+                        <label for="name">Main 담당자 Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Main 담당자 Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Main 담당자 Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
+                </div>
+                <div >
+                    <form>
+                        <label for="name">Sub  담당자 Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </form>
+                    
+                    <form>
+                        <label for="phone">Sub  담당자 Phone:</label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+                        <small>Format: 123-456-7890</small>
+                    </form>
+                    
+                    <form>
+                        <label for="email">Sub  담당자 Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <!-- <button type="submit">Submit</button> -->
+                    </form>
+                </div>
+               
+            </div>
+            <div class="tableDiv">
+                    <table class="flowTable">
+                        <tbody>
+                            <tr>
+                                <td class="flowTableTd">
+                                    <div class="tdDiv">
+                                        <textarea class="pasteInput" type="text" placeholder="업무절차 상황 입력"></textarea>
+                                        <div class="pasteArea">Window Key+Shift Key+ S Key<br>으로 클립보드 저장된 이미지</div>
+                                        
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+          </div>
         </div>
-        <div>
-            <div class="bi">
-                <h4 class="ClinetName">업체명</h4>
-                <input type="text" id="biClientName">
-            </div>
-            <div class="bi">
-                <h4>업체 사업자 등록번호</h4>
-                <input type="text" id="biClientNo">
-            </div>
-            <div class="bi">
-                <h4>업체 대표자</h4>
-                <input type="text" id="biCeoName">
-            </div>
-            <div class="bi">
-                <h4>업체 주소</h4>
-                <input type="text" id="biAddress">
-            </div>
-            <div class="bi">
-                <h4>업체 운영화물</h4>
-                <input type="text" id="biCargoName">
-            </div>
-            <div style="display:grid;grid-template-rows:1fr 3fr">
-                <h4>업체 운영참고사항</h4>
-                <input type="text" id="biRemark">
-            </div>
-        </div></div>
     </body>
-<script>
+    <script>
     // const regPass = prompt('비밀번호를 입력하세요');
     // if(regPass != '1234'){
     //     alert('비밀번호가 일치하지 않습니다.');
     //     location.href = 'index.html';
     // }
-    document.querySelector('button').addEventListener('click', function(){
-        var category = document.querySelector('#category').value;
-        if(category == 0){
-            location.href = 'new.php';
-        }else{
-            location.href = 'list.php?category=' + category;
-        }
-    });
+    
     document.querySelectorAll('[role="tab"]').forEach(tab => {
-  tab.addEventListener('click', () => {
-    // Deselect all tabs
-    document.querySelectorAll('[role="tab"]').forEach(t => {
-      t.setAttribute('aria-selected', 'false');
+        tab.addEventListener('click', () => {
+            // Deselect all tabs
+            document.querySelectorAll('[role="tab"]').forEach(t => {
+            t.setAttribute('aria-selected', 'false');
+            });
+
+            // Hide all tab panels
+            document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
+            panel.hidden = true;
+            });
+
+            // Select the clicked tab
+            tab.setAttribute('aria-selected', 'true');
+
+            // Show the associated tab panel
+            const panelId = tab.getAttribute('aria-controls');
+            document.getElementById(panelId).hidden = false;
+        });
     });
-
-    // Hide all tab panels
-    document.querySelectorAll('[role="tabpanel"]').forEach(panel => {
-      panel.hidden = true;
-    });
-
-    // Select the clicked tab
-    tab.setAttribute('aria-selected', 'true');
-
-    // Show the associated tab panel
-    const panelId = tab.getAttribute('aria-controls');
-    document.getElementById(panelId).hidden = false;
-  });
-});
 </script>
     
 <script src="main.js"></script>
