@@ -153,6 +153,7 @@ function submitUpLoad(e){
             let managerObj = {};
             let processObj = {};
             let upObj = {};
+
             if(selectedTabDiv.id=="panel2"){
                 refPath="FineManual/"+clientName.value+"/in/";
             }else if(selectedTabDiv.id=="panel3"){
@@ -160,6 +161,7 @@ function submitUpLoad(e){
             }else if(selectedTabDiv.id=="panel4"){
                 refPath="FineManual/"+clientName.value+"/adj/";
             }
+
             const managerKey =managerDiv.querySelectorAll('label');
             const managerValue = managerDiv.querySelectorAll('input');
             for(let i=0;i<managerKey.length;i++){
@@ -217,9 +219,9 @@ function searchInit(){
     const biList=["업체명","업체 사업자 등록번호","업체 대표자","업체 주소","업체 운영화물","remark"]
         database_f.ref(refPath).once('value').then((snapshot)=>{
         const basicInfo = snapshot.val()["basicInfo"];
-        const inInfo = snapshot.val()["in"]["manager"];
-        const outInfo = snapshot.val()["out"]["manager"];
-        const adjInfo = snapshot.val()["adj"]["manager"];
+        const inInfo = snapshot.val()["in"];
+        const outInfo = snapshot.val()["out"];
+        const adjInfo = snapshot.val()["adj"];
         let basicInput = document.querySelectorAll('#panel1 input,textarea');
         const inInput = document.querySelectorAll('#panel2 input');
         const outInput = document.querySelectorAll('#panel3 input');
@@ -227,12 +229,28 @@ function searchInit(){
         for(let i=0;i<basicInput.length;i++){
                     basicInput[i].value=basicInfo[biList[i]];
         }
-        for(let j=0;j<inInput.length;j++){
-            inInput[j].value=inInfo[biList[j]];
-            outInput[j].value=outInfo[biList[j]];
-            adjInput[j].value=adjInfo[biList[j]];
-        }
-        
+            try{
+            const infoIn = Object.values(inInfo["manager"]);
+            for(let j=0;j<inInput.length;j++){
+                inInput[j].value=infoIn[j];
+            }}catch (e) {
+                console.log(e);
+            }
+            try{
+                const infoOut = Object.values(outInfo["manager"]);
+                for(let k=0;k<outInput.length;k++){
+                    outInput[k].value=infoOut[k];
+                }}catch (e) {
+                    console.log(e);
+                }
+            try{
+            for(let l=0;l<adjInput.length;l++){
+                const infoAdj = Object.values(adjInfo["manager"]);
+                inInput[l].value=infoAdj[l];
+            }}catch (e) {
+                console.log(e);
+            }    
+
     });
 }
 
