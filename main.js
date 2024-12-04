@@ -145,7 +145,7 @@ function submitUpLoad(e){
             for(let i=0;i<pKey.length;i++){
                 basicObj[pKey[i].innerHTML]=pValue[i].value;
             }
-            basicObj["remark"]=parentNode.querySelector('#biRemark').value;
+            basicObj["remark"]=selectedTabDiv.querySelector('#biRemark').value;
             const refPath="FineManual/"+basicObj["업체명"]+"/basicInfo/";
             database_f.ref(refPath).update(basicObj).then(()=>{alert("업로드 성공")}).catch((e)=>{alert("업로드 실패")});
         }else {
@@ -177,9 +177,9 @@ function submitUpLoad(e){
                 }
                 upObj["manager"]=managerObj;
                 upObj["process"]=processObj;
-            // database_f.ref(refPath).update(upObj).then(()=>{
-            //     if(i==processDiv.length-1){alert("업로드 성공")}})
-            // .catch((e)=>{alert("업로드 실패")});
+            database_f.ref(refPath).update(upObj).then(()=>{
+                if(i==processDiv.length-1){alert("업로드 성공")}})
+            .catch((e)=>{alert("업로드 실패")});
             }
             for(let k in processObj){
                     imgObj.push(processObj[k]["img"]);
