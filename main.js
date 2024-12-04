@@ -97,8 +97,6 @@ function addEvent(){
                 }
             }
         });
-    
-      
 }
 
 function delEvent(){
@@ -134,6 +132,7 @@ function toastOn(msg,t){
   }
 function submitUpLoad(e){
     let selectedTabDiv;
+    let imgObj=[];
     document.querySelectorAll('[role="tabpanel"]').forEach(tab => {
         if(tab.hidden ==false){ 
             selectedTabDiv=tab;
@@ -167,37 +166,81 @@ function submitUpLoad(e){
                 managerObj[managerKey[i].innerHTML]=managerValue[i].value;
             }
             const processDiv=selectedTabDiv.querySelectorAll('.tdDiv');
-            for(let i=0;i<processDiv.length;i++){
-                const processKey =processDiv[i].querySelector('textarea');
-                const processValue = processDiv[i].querySelector('img');
+            for(let j=0;j<processDiv.length;j++){
+                const processKey =processDiv[j].querySelector('textarea');
+                const processValue = processDiv[j].querySelector('img');
                 if(processValue==null){
-                    processObj[i]={"contents":processKey.value,"img":"No Image"};
+                    processObj[j]={"contents":processKey.value,"img":"No Image"};
                 }
                 else{
-                    processObj[i]={"contents":processKey.value,"img":processValue.src};
+                    processObj[j]={"contents":processKey.value,"img":processValue.src};
                 }
                 upObj["manager"]=managerObj;
                 upObj["process"]=processObj;
-            database_f.ref(refPath).update(upObj).then(()=>{
-                if(i==processDiv.length-1){alert("업로드 성공")}})
-            .catch((e)=>{alert("업로드 실패")});
+            // database_f.ref(refPath).update(upObj).then(()=>{
+            //     if(i==processDiv.length-1){alert("업로드 성공")}})
+            // .catch((e)=>{alert("업로드 실패")});
             }
-    }
-}
+            for(let k in processObj){
+                    imgObj.push(processObj[k]["img"]);
+                }
+            console.log(imgObj);
+
+            imgObj.forEach((imgUrl, index) => {
+                if(imgUrl=="No Image"){
+
+                }else{
+                    fetch(imgUrl)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // const fileName = imgUrl.split('/').pop(); // Extract file name from URL
+                        const file = new File([blob], index, { type: blob.type });
+                        console.log(refPath,index);
+                        const fileRef = storage_f.ref(refPath+"/pI").child(index.toString());
+                        fileRef.put(file).then((snapshot) => {
+                            if (index === imgObj.length - 1) {
+                                console.log("업로드 완료");
+                            }
+                        });
+                    })
+                    .catch(error => {
+                      console.error("Error uploading file:", error);
+                  });
+                  
+                }
+            });
+          }
+        }
 function searchInit(){
     const clientName = document.querySelector('#clientName').value;
     const refPath="FineManual/"+clientName+"/";
     const biList=["업체명","업체 사업자 등록번호","업체 대표자","업체 주소","업체 운영화물","remark"]
         database_f.ref(refPath).once('value').then((snapshot)=>{
         const basicInfo = snapshot.val()["basicInfo"];
-        const inInfo = snapshot.val()["in"];
-        const outInfo = snapshot.val()["out"];
-        console.log(data);
+        const inInfo = snapshot.val()["in"]["manager"];
+        const outInfo = snapshot.val()["out"]["manager"];
+        const adjInfo = snapshot.val()["adj"]["manager"];
         let basicInput = document.querySelectorAll('#panel1 input,textarea');
+        const inInput = document.querySelectorAll('#panel2 input');
+        const outInput = document.querySelectorAll('#panel3 input');
+        const adjInput = document.querySelectorAll('#panel4 input');
         for(let i=0;i<basicInput.length;i++){
                     basicInput[i].value=basicInfo[biList[i]];
-
-            }
+        }
+        for(let j=0;j<inInput.length;j++){
+            inInput[j].value=inInfo[biList[j]];
+            outInput[j].value=outInfo[biList[j]];
+            adjInput[j].value=adjInfo[biList[j]];
+        }
+        
     });
-
 }
+
+function returnTime(){
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+    return formattedTime;
+  }

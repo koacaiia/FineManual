@@ -75,7 +75,7 @@ h4, h6{
 }
 .bi_manager div{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr ;
+  grid-template-columns:1fr 1fr 1fr 1fr ;
 }
 .flowTableTd{
   width:32vw;
