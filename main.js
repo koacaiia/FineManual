@@ -16,9 +16,8 @@ const messaging = firebase.messaging();
 const storage_f = firebase.storage();
 const deptName = "WareHouseDept2";
 const divPaste = document.querySelectorAll('.pasteArea');
-const tr=document.querySelectorAll('tr')[0];
-const tdList =tr.querySelectorAll('td');
-
+const trList=document.querySelectorAll('tr');
+const tdList =document.querySelectorAll('td');
 let data = {};
 const clientName = document.querySelector('#clientName');
 init();
@@ -62,7 +61,21 @@ tdList.forEach((e)=>{
     })
 });
 
-function addEvent(){
+function addEvent(e){
+    console.log(e);
+    let tr;
+    if(e.classList !="bi_title"){
+        const par =e.parentNode.parentNode.parentNode;
+        if(par.id=="panel2"){
+            tr =trList[0];
+        }else if(par.id=="panel3"){
+            tr =trList[1];  
+        }else if(par.id=="panel4"){
+            tr =trList[2];
+        }
+    }else{
+        tr =e.parentNode.parentNode.querySelector('tr');
+    }
     const td=document.createElement('td');
     td.classList.add("flowTableTd");
     const div=document.createElement('div');
@@ -271,15 +284,38 @@ function searchInit(){
         
         const processTable=()=>{
             const pIn = inInfo["process"];
-            // const pOut = outInfo["process"];
-            // const pAdj = adjInfo["process"];
-            console.log(pIn);
+            const ch= document.querySelectorAll('.bi_title');
             for(let c in pIn){
-                addEvent();
-                console.log(pIn[c],c);
+                addEvent(ch[0]);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
                 textA.value=pIn[c]["contents"];
+                if(pIn[c]["img"]=="No Image"){
+                    imgDiv.innerHTML="No Image";}else{
+                     img = document.createElement('img');
+                        img.src=pIn[c]["img"];
+                        imgDiv.appendChild(img);   
+                    }
+            }
+            const pOut = outInfo["process"];
+            for(let c in pOut){
+                addEvent(ch[1]);
+                const textA = document.querySelectorAll('.pasteInput')[c];
+                const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                textA.value=pOut[c]["contents"];
+                if(pIn[c]["img"]=="No Image"){
+                    imgDiv.innerHTML="No Image";}else{
+                     img = document.createElement('img');
+                        img.src=pIn[c]["img"];
+                        imgDiv.appendChild(img);   
+                    }
+            }
+            const pAdj = adjInfo["process"];
+            for(let c in pAdj){
+                addEvent(ch[2]);
+                const textA = document.querySelectorAll('.pasteInput')[c];
+                const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                textA.value=pAdj[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
                      img = document.createElement('img');
