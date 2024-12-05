@@ -58,7 +58,7 @@ divPaste.forEach((e)=>{
 
 tdList.forEach((e)=>{
     e.addEventListener('click',()=>{
-      e.classList.toggle("tdSelected");
+      e.querySelector("div").classList.toggle("tdSelected");
     })
 });
 
@@ -69,7 +69,7 @@ function addEvent(){
     div.classList.add("tdDiv");
     const input=document.createElement('textarea');
     input.classList.add("pasteInput");
-    input.placeholder="이미지를 붙여넣으세요";
+    input.placeholder="업무진행 상황을 입력 바랍니다.";
     const divPaste=document.createElement('div');
     divPaste.classList.add("pasteArea");
     divPaste.innerHTML="Window Key+Shift Key+ S Key<br>으로 클립보드 저장된 이미지";
@@ -111,10 +111,19 @@ function delImg(){
         return;
     }
     console.log(selected.length);
-    img = document.querySelectorAll('.tdSelected img');
+    img = document.querySelector('.tdSelected img');
+    img.remove();
 
 }
 function detailImg(){
+    const img = document.querySelector('.tdSelected img');
+    if (img) {
+        const newWindow = window.open();
+        newWindow.document.write(`<img src="${img.src}" alt="Image">`);
+    } else {
+        console.log('No image found');
+    }
+
 
 }
 function toastOn(msg,t){
@@ -165,7 +174,7 @@ function submitUpLoad(e){
             const managerKey =managerDiv.querySelectorAll('label');
             const managerValue = managerDiv.querySelectorAll('input');
             for(let i=0;i<managerKey.length;i++){
-                managerObj[managerKey[i].innerHTML]=managerValue[i].value;
+                managerObj[i+"_"+managerKey[i].innerHTML]=managerValue[i].value;
             }
             const processDiv=selectedTabDiv.querySelectorAll('.tdDiv');
             for(let j=0;j<processDiv.length;j++){
@@ -179,9 +188,14 @@ function submitUpLoad(e){
                 }
                 upObj["manager"]=managerObj;
                 upObj["process"]=processObj;
-            database_f.ref(refPath).update(upObj).then(()=>{
-                if(i==processDiv.length-1){alert("업로드 성공")}})
-            .catch((e)=>{alert("업로드 실패")});
+            database_f.ref(refPath).update({"manager":upObj["manager"]}).then(()=>{
+                alert("Manager 업로드 성공")})
+            .catch((e)=>{console.log(e)
+                alert("Manager 업로드 실패")});
+            }
+            database_f.ref(refPath).update({"process":upObj["process"]}).then(()=>{
+                alert("Process 업로드 성공")})
+            .catch((e)=>{alert("Process 업로드 실패")});
             }
             for(let k in processObj){
                     imgObj.push(processObj[k]["img"]);
@@ -212,8 +226,12 @@ function submitUpLoad(e){
                 }
             });
           }
-        }
+        
 function searchInit(){
+    const tr = document.querySelectorAll('tr');
+    tr.forEach((e)=>{
+        e.replaceChildren();
+    });
     const clientName = document.querySelector('#clientName').value;
     const refPath="FineManual/"+clientName+"/";
     const biList=["업체명","업체 사업자 등록번호","업체 대표자","업체 주소","업체 운영화물","remark"]
@@ -244,12 +262,34 @@ function searchInit(){
                     console.log(e);
                 }
             try{
-            for(let l=0;l<adjInput.length;l++){
                 const infoAdj = Object.values(adjInfo["manager"]);
+            for(let l=0;l<adjInput.length;l++){
                 inInput[l].value=infoAdj[l];
             }}catch (e) {
                 console.log(e);
             }    
+        
+        const processTable=()=>{
+            const pIn = inInfo["process"];
+            // const pOut = outInfo["process"];
+            // const pAdj = adjInfo["process"];
+            console.log(pIn);
+            for(let c in pIn){
+                addEvent();
+                console.log(pIn[c],c);
+                const textA = document.querySelectorAll('.pasteInput')[c];
+                const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                textA.value=pIn[c]["contents"];
+                if(pIn[c]["img"]=="No Image"){
+                    imgDiv.innerHTML="No Image";}else{
+                     img = document.createElement('img');
+                        img.src=pIn[c]["img"];
+                        imgDiv.appendChild(img);   
+                    }
+            }
+        }    
+        processTable();
+            
 
     });
 }

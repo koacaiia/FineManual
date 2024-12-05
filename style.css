@@ -24,23 +24,26 @@ h4, h6{
   margin-top:3px;
 }
 .pasteArea {
-  width: 100%;
-  height: 100%;
-  border: 2px dashed #8863e6;
+  width: 98%;
+  height: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   overflow: hidden;
   position: relative;
+  margin:5px;
+  background-color: bisque;
+  border: 1px solid black;
+  border-radius: 5px ;
 }
 #imageContainer img {
   max-width: 100%;
   max-height: 100%;
 }
 .tdSelected{
-  border:1px solid red;
-  background-color: rgb(241, 103, 12, 0.2);
+  border:3px solid red;
+  background-color: red;
   
 }
 .tdDiv{
@@ -109,4 +112,8 @@ h4, h6{
 #tost_message.active {
   opacity: 100%;
   bottom: 50px;
+}
+.pasteInput{
+  margin:5px;
+  background-color: beige;
 }
