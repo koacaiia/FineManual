@@ -30,7 +30,13 @@
         <button role="tab" aria-selected="false" aria-controls="panel3" id="tab3">출고</button>
         <button role="tab" aria-selected="false" aria-controls="panel4" id="tab4">정산</button>
       </div>
-      
+      <!-- <div role="tabpanel" id="panel" aria-selected="true" style="display:flex;justify-content:center;align-items:center;height:76vh;background-image: url('/fineLog.png');background-size: 95vw 75vh;">
+        <div id="logDiv" style="display:grid;grid-template-columns:3fr 1fr;text-align: center; height:10vh;width:40vw">
+            <input style="height:100%;width:80%;background-color:rgba(255, 255, 255, 0.8);border:1px solid #0f0f0f;color:red;"type="text" id="passW" placeholder="권한 비밀번호를 입력 바랍니다">
+            <button style="height:100%;width:80%"onclick="passCheck()">Log In</button>
+        </div>
+
+      </div> -->
       <div role="tabpanel" id="panel1" aria-labelledby="tab1">
         <div style="display:grid;grid-template-rows:5vh 70vh;row-gap:1vh">
         <div style="display:grid;grid-template-columns:3fr 1fr">
@@ -62,10 +68,8 @@
                 <div>업체 운영참고사항</div>
                 <textarea id="biRemark" placeholder="Type your text here..."></textarea>
             </div>
+            </div>
         </div>
-        
-        </div>
-        
       </div>
       <div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden>
         <div class="tabDiv">
