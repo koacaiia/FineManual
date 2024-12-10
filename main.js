@@ -208,11 +208,12 @@ function submitUpLoad(e){
                 }
                 upObj["manager"]=managerObj;
                 upObj["process"]=processObj;
+            
+            }
             database_f.ref(refPath).update({"manager":upObj["manager"]}).then(()=>{
                 alert("Manager 업로드 성공")})
             .catch((e)=>{console.log(e)
                 alert("Manager 업로드 실패")});
-            }
             database_f.ref(refPath).update({"process":upObj["process"]}).then(()=>{
                 alert("Process 업로드 성공")})
             .catch((e)=>{alert("Process 업로드 실패")});
@@ -297,7 +298,7 @@ function searchInit(){
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
                 const div= textA.parentNode;
-                div.id="/FineManual/(주)시노로지스/in/process/"+c;
+                div.id="/FineManual/"+clientName+"/in/process/"+c;
                 textA.value=pIn[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
@@ -312,7 +313,7 @@ function searchInit(){
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
                 const div= textA.parentNode;
-                div.id="/FineManual/(주)시노로지스/out/process/"+c;
+                div.id="/FineManual/"+clientName+"/out/process/"+c;
                 textA.value=pOut[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
@@ -327,7 +328,7 @@ function searchInit(){
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
                 const div= textA.parentNode;
-                div.id="/FineManual/(주)시노로지스/adj/process/"+c;
+                div.id="/FineManual/"+clientName+"/adj/process/"+c;
                 textA.value=pAdj[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
