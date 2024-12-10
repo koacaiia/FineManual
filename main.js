@@ -115,6 +115,13 @@ function addEvent(e){
 function delEvent(){
     document.querySelectorAll('.tdSelected').forEach((e)=>{
         e.parentNode.remove();
+        if(e.id!=""){
+            const delPath= e.id;
+            database_f.ref(delPath).remove().then(()=>{
+            alert("Deleted Server Data")})
+        .catch((e)=>{alert("삭제 실패")});
+        }
+        
     })
 }
 function delImg(){
@@ -289,6 +296,8 @@ function searchInit(){
                 addEvent(ch[0]);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                const div= textA.parentNode;
+                div.id="/FineManual/(주)시노로지스/in/process/"+c;
                 textA.value=pIn[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
@@ -302,6 +311,8 @@ function searchInit(){
                 addEvent(ch[1]);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                const div= textA.parentNode;
+                div.id="/FineManual/(주)시노로지스/out/process/"+c;
                 textA.value=pOut[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
@@ -315,6 +326,8 @@ function searchInit(){
                 addEvent(ch[2]);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                const div= textA.parentNode;
+                div.id="/FineManual/(주)시노로지스/adj/process/"+c;
                 textA.value=pAdj[c]["contents"];
                 if(pIn[c]["img"]=="No Image"){
                     imgDiv.innerHTML="No Image";}else{
