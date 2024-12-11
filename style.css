@@ -117,3 +117,12 @@ h4, h6{
   margin:5px;
   background-color: beige;
 }
+textarea{
+  width: 95%;
+  height: 85%;
+  resize: none;
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  padding: 10px;
+}

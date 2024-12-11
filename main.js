@@ -57,12 +57,15 @@ divPaste.forEach((e)=>{
 
 tdList.forEach((e)=>{
     e.addEventListener('click',()=>{
+        const dv = e.parentNode.querySelectorAll('.tdDiv');
+     dv.forEach((e)=>{
+        e.classList.remove("tdSelected");
+    });
       e.querySelector("div").classList.toggle("tdSelected");
     })
 });
 
 function addEvent(e){
-    console.log(e);
     let tr;
     if(e.classList !="bi_title"){
         const par =e.parentNode.parentNode.parentNode;
@@ -76,7 +79,13 @@ function addEvent(e){
     }else{
         tr =e.parentNode.parentNode.querySelector('tr');
     }
+    const selDiv = tr.querySelectorAll('.tdSelected');
     const td=document.createElement('td');
+    if(selDiv.length==1){
+        const tdIndex = selDiv[0].parentNode.cellIndex
+        tr.insertBefore(td, tr.cells[tdIndex+1]);
+        }
+       
     td.classList.add("flowTableTd");
     const div=document.createElement('div');
     div.classList.add("tdDiv");
@@ -90,7 +99,12 @@ function addEvent(e){
     td.appendChild(div);
     div.appendChild(input);
     div.appendChild(divPaste);
+    console.log(tr);
     td.addEventListener('click',()=>{
+        const dv = tr.querySelectorAll('.tdDiv');
+        dv.forEach((e)=>{
+           e.classList.remove("tdSelected");
+       });
         td.querySelector('.tdDiv').classList.toggle("tdSelected");
         toastOn(document.querySelectorAll('.tdSelected').length+" 개 선택되었습니다.",3000);
       })
@@ -115,12 +129,12 @@ function addEvent(e){
 function delEvent(){
     document.querySelectorAll('.tdSelected').forEach((e)=>{
         e.parentNode.remove();
-        if(e.id!=""){
-            const delPath= e.id;
-            database_f.ref(delPath).remove().then(()=>{
-            alert("Deleted Server Data")})
-        .catch((e)=>{alert("삭제 실패")});
-        }
+        // if(e.id!=""){
+        //     const delPath= e.id;
+        //     database_f.ref(delPath).remove().then(()=>{
+        //     alert("Deleted Server Data")})
+        // .catch((e)=>{alert("삭제 실패")});
+        // }
         
     })
 }
@@ -217,35 +231,35 @@ function submitUpLoad(e){
             database_f.ref(refPath).update({"process":upObj["process"]}).then(()=>{
                 alert("Process 업로드 성공")})
             .catch((e)=>{alert("Process 업로드 실패")});
-            }
             for(let k in processObj){
-                    imgObj.push(processObj[k]["img"]);
-                }
-            console.log(imgObj);
+                imgObj.push(processObj[k]["img"]);
+            }
 
-            imgObj.forEach((imgUrl, index) => {
-                if(imgUrl=="No Image"){
+        imgObj.forEach((imgUrl, index) => {
+            if(imgUrl=="No Image"){
 
-                }else{
-                    fetch(imgUrl)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        // const fileName = imgUrl.split('/').pop(); // Extract file name from URL
-                        const file = new File([blob], index, { type: blob.type });
-                        console.log(refPath,index);
-                        const fileRef = storage_f.ref(refPath+"/pI").child(index.toString());
-                        fileRef.put(file).then((snapshot) => {
-                            if (index === imgObj.length - 1) {
-                                console.log("업로드 완료");
-                            }
-                        });
-                    })
-                    .catch(error => {
-                      console.error("Error uploading file:", error);
-                  });
-                  
-                }
-            });
+            }else{
+                fetch(imgUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    // const fileName = imgUrl.split('/').pop(); // Extract file name from URL
+                    const file = new File([blob], index, { type: blob.type });
+                    console.log(refPath,index);
+                    const fileRef = storage_f.ref(refPath+"/pI").child(index.toString());
+                    fileRef.put(file).then((snapshot) => {
+                        if (index === imgObj.length - 1) {
+                            console.log("업로드 완료");
+                        }
+                    });
+                })
+                .catch(error => {
+                  console.error("Error uploading file:", error);
+              });
+              
+            }
+        });
+            }
+          
           }
         
 function searchInit(){
@@ -292,11 +306,14 @@ function searchInit(){
         
         const processTable=()=>{
             const pIn = inInfo["process"];
+            console.log(pIn);
             const ch= document.querySelectorAll('.bi_title');
             for(let c in pIn){
-                addEvent(ch[0]);
+                addEvent(ch[0])
+                console.log(c);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                console.log(textA,imgDiv);
                 const div= textA.parentNode;
                 div.id="/FineManual/"+clientName+"/in/process/"+c;
                 textA.value=pIn[c]["contents"];
