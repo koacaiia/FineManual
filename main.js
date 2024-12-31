@@ -83,10 +83,17 @@ function addEvent(e){
     const td=document.createElement('td');
     if(selDiv.length==1){
         const tdIndex = selDiv[0].parentNode.cellIndex
+        console.log(tdIndex);
         tr.insertBefore(td, tr.cells[tdIndex+1]);
         }
        
     td.classList.add("flowTableTd");
+
+    td.setAttribute('draggable', true); // Make the td draggable
+    td.addEventListener('dragstart', handleDragStart);
+    td.addEventListener('dragover', handleDragOver);
+    td.addEventListener('drop', handleDrop);
+
     const div=document.createElement('div');
     div.classList.add("tdDiv");
     const input=document.createElement('textarea');
@@ -304,13 +311,12 @@ function searchInit(){
                 console.log(e);
             }    
         
-        const processTable=()=>{
-            const pIn = inInfo["process"];
-            console.log(pIn);
+        const processTable=async()=>{
             const ch= document.querySelectorAll('.bi_title');
+            try{
+            const pIn = inInfo["process"];
             for(let c in pIn){
                 addEvent(ch[0])
-                console.log(c);
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
                 console.log(textA,imgDiv);
@@ -324,36 +330,63 @@ function searchInit(){
                         imgDiv.appendChild(img);   
                     }
             }
-            const pOut = outInfo["process"];
-            for(let c in pOut){
-                addEvent(ch[1]);
-                const textA = document.querySelectorAll('.pasteInput')[c];
-                const imgDiv = document.querySelectorAll('.pasteArea')[c];
-                const div= textA.parentNode;
-                div.id="/FineManual/"+clientName+"/out/process/"+c;
-                textA.value=pOut[c]["contents"];
-                if(pIn[c]["img"]=="No Image"){
-                    imgDiv.innerHTML="No Image";}else{
-                     img = document.createElement('img');
-                        img.src=pIn[c]["img"];
-                        imgDiv.appendChild(img);   
-                    }
+            }catch (e) {
+                console.log(e);
+                if (e.code === 403) {
+                    console.error('Permission error: ', e.message);
+                } else {
+                    console.error('An unexpected error occurred: ', e);
+                }
             }
-            const pAdj = adjInfo["process"];
-            for(let c in pAdj){
-                addEvent(ch[2]);
-                const textA = document.querySelectorAll('.pasteInput')[c];
-                const imgDiv = document.querySelectorAll('.pasteArea')[c];
-                const div= textA.parentNode;
-                div.id="/FineManual/"+clientName+"/adj/process/"+c;
-                textA.value=pAdj[c]["contents"];
-                if(pIn[c]["img"]=="No Image"){
-                    imgDiv.innerHTML="No Image";}else{
-                     img = document.createElement('img');
-                        img.src=pIn[c]["img"];
-                        imgDiv.appendChild(img);   
-                    }
-            }
+            try{
+                const pOut = outInfo["process"];
+                for(let c in pOut){
+                    addEvent(ch[1]);
+                    const textA = document.querySelectorAll('.pasteInput')[c];
+                    const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                    const div= textA.parentNode;
+                    div.id="/FineManual/"+clientName+"/out/process/"+c;
+                    textA.value=pOut[c]["contents"];
+                    if(pIn[c]["img"]=="No Image"){
+                        imgDiv.innerHTML="No Image";}else{
+                         img = document.createElement('img');
+                            img.src=pIn[c]["img"];
+                            imgDiv.appendChild(img);   
+                        }
+                }
+            }catch (e) {
+                console.log(e);
+                if (e.code === 403) {
+                    console.error('Permission error: ', e.message);
+                } else {
+                    console.error('An unexpected error occurred: ', e);
+                }
+            }    
+            try{
+                const pAdj = adjInfo["process"];
+                for(let c in pAdj){
+                    addEvent(ch[2]);
+                    const textA = document.querySelectorAll('.pasteInput')[c];
+                    const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                    const div= textA.parentNode;
+                    div.id="/FineManual/"+clientName+"/adj/process/"+c;
+                    textA.value=pAdj[c]["contents"];
+                    if(pIn[c]["img"]=="No Image"){
+                        imgDiv.innerHTML="No Image";}else{
+                         img = document.createElement('img');
+                            img.src=pIn[c]["img"];
+                            imgDiv.appendChild(img);   
+                        }
+                }
+            }catch (e) {
+                console.log(e);
+                if (e.code === 403) {
+                    console.error('Permission error: ', e.message);
+                } else {
+                    console.error('An unexpected error occurred: ', e);
+                }
+            }    
+            
         }    
         processTable();
             
@@ -369,3 +402,33 @@ function returnTime(){
     const formattedTime = `${hours}:${minutes}:${seconds}`;
     return formattedTime;
   }
+  let draggedTd;
+
+  function handleDragStart(event) {
+      draggedTd = event.target.parentNode.parentNode.parentNode;
+      console.log(draggedTd);
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/html', draggedTd.outerHTML);
+  }
+  
+  function handleDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+  }
+  function handleDrop(event) {
+    event.preventDefault();
+    console.log(event.target.parentNode.parentNode.parentNode);
+    if (draggedTd !== event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.tagName === 'TD') {
+        const targetTd = event.target.parentNode.parentNode.parentNode;
+        const tr = targetTd.parentNode;
+        console.log(tr,targetTd);
+        const draggedIndex = Array.from(tr.children).indexOf(draggedTd);
+        const targetIndex = Array.from(tr.children).indexOf(targetTd);
+
+        if (draggedIndex < targetIndex) {
+            tr.insertBefore(draggedTd, targetTd.nextSibling);
+        } else {
+            tr.insertBefore(draggedTd, targetTd);
+        }
+    }
+}  
