@@ -136,12 +136,12 @@ function addEvent(e){
 function delEvent(){
     document.querySelectorAll('.tdSelected').forEach((e)=>{
         e.parentNode.remove();
-        // if(e.id!=""){
-        //     const delPath= e.id;
-        //     database_f.ref(delPath).remove().then(()=>{
-        //     alert("Deleted Server Data")})
-        // .catch((e)=>{alert("삭제 실패")});
-        // }
+        if(e.id!=""){
+            const delPath= e.id;
+            database_f.ref(delPath).remove().then(()=>{
+            alert("Deleted Server Data")})
+        .catch((e)=>{alert("삭제 실패")});
+        }
         
     })
 }
