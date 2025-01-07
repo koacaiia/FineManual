@@ -342,15 +342,16 @@ function searchInit(){
                  const pOut = outInfo["process"];
                     for(let c in pOut){
                         addEvent(ch[1]);
-                        const textA = document.querySelectorAll('.pasteInput')[c];
-                        const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                        const tabDiv = document.querySelector("#panel3");
+                        const textA = tabDiv.querySelectorAll('.pasteInput')[c];
+                        const imgDiv = tabDiv.querySelectorAll('.pasteArea')[c];
                         const div= textA.parentNode;
                         div.id="/FineManual/"+clientName+"/out/process/"+c;
                         textA.value=pOut[c]["contents"];
-                        if(pIn[c]["img"]=="No Image"){
+                        if(pOut[c]["img"]=="No Image"){
                             imgDiv.innerHTML="No Image";}else{
                              img = document.createElement('img');
-                                img.src=pIn[c]["img"];
+                                img.src=pOut[c]["img"];
                                 imgDiv.appendChild(img);   
                             }
                     }
@@ -359,15 +360,16 @@ function searchInit(){
                     const pAdj = adjInfo["process"];
                     for(let c in pAdj){
                         addEvent(ch[2]);
-                        const textA = document.querySelectorAll('.pasteInput')[c];
-                        const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                        const tabDiv = document.querySelector("#panel4");
+                        const textA = tabDiv.querySelectorAll('.pasteInput')[c];
+                        const imgDiv = tabDiv.querySelectorAll('.pasteArea')[c];
                         const div= textA.parentNode;
                         div.id="/FineManual/"+clientName+"/adj/process/"+c;
                         textA.value=pAdj[c]["contents"];
-                        if(pIn[c]["img"]=="No Image"){
+                        if(pAdj[c]["img"]=="No Image"){
                             imgDiv.innerHTML="No Image";}else{
                              img = document.createElement('img');
-                                img.src=pIn[c]["img"];
+                                img.src=pAdj[c]["img"];
                                 imgDiv.appendChild(img);   
                             }
                     }
