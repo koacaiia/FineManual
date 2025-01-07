@@ -39,6 +39,7 @@ function init(){
 divPaste.forEach((e)=>{
     e.addEventListener('paste', (event) => {
         const items = event.clipboardData.items;
+        console.log(items);
         for (let i = 0; i < items.length; i++) {
             if (items[i].type.indexOf('image') !== -1) {
                 const file = items[i].getAsFile();
@@ -89,11 +90,6 @@ function addEvent(e){
        
     td.classList.add("flowTableTd");
 
-    td.setAttribute('draggable', true); // Make the td draggable
-    td.addEventListener('dragstart', handleDragStart);
-    td.addEventListener('dragover', handleDragOver);
-    td.addEventListener('drop', handleDrop);
-
     const div=document.createElement('div');
     div.classList.add("tdDiv");
     const input=document.createElement('textarea');
@@ -106,7 +102,6 @@ function addEvent(e){
     td.appendChild(div);
     div.appendChild(input);
     div.appendChild(divPaste);
-    console.log(tr);
     td.addEventListener('click',()=>{
         const dv = tr.querySelectorAll('.tdDiv');
         dv.forEach((e)=>{
@@ -117,6 +112,7 @@ function addEvent(e){
       })
     divPaste.addEventListener('paste', (event) => {
             const items = event.clipboardData.items;
+            console.log(items);
             for (let i = 0; i < items.length; i++) {
                 if (items[i].type.indexOf('image') !== -1) {
                     const file = items[i].getAsFile();
@@ -131,6 +127,11 @@ function addEvent(e){
                 }
             }
         });
+    // td.setAttribute('draggable', true); // Make the td draggable
+    // td.addEventListener('dragstart', handleDragStart);
+    // td.addEventListener('dragover', handleDragOver);
+    // td.addEventListener('drop', handleDrop);
+    
 }
 
 function delEvent(){
@@ -311,7 +312,7 @@ function searchInit(){
                 console.log(e);
             }    
         
-        const processTable=async()=>{
+        const processTable=()=>{
             const ch= document.querySelectorAll('.bi_title');
             try{
             const pIn = inInfo["process"];
@@ -319,7 +320,6 @@ function searchInit(){
                 addEvent(ch[0])
                 const textA = document.querySelectorAll('.pasteInput')[c];
                 const imgDiv = document.querySelectorAll('.pasteArea')[c];
-                console.log(textA,imgDiv);
                 const div= textA.parentNode;
                 div.id="/FineManual/"+clientName+"/in/process/"+c;
                 textA.value=pIn[c]["contents"];
@@ -338,54 +338,41 @@ function searchInit(){
                     console.error('An unexpected error occurred: ', e);
                 }
             }
-            try{
-                const pOut = outInfo["process"];
-                for(let c in pOut){
-                    addEvent(ch[1]);
-                    const textA = document.querySelectorAll('.pasteInput')[c];
-                    const imgDiv = document.querySelectorAll('.pasteArea')[c];
-                    const div= textA.parentNode;
-                    div.id="/FineManual/"+clientName+"/out/process/"+c;
-                    textA.value=pOut[c]["contents"];
-                    if(pIn[c]["img"]=="No Image"){
-                        imgDiv.innerHTML="No Image";}else{
-                         img = document.createElement('img');
-                            img.src=pIn[c]["img"];
-                            imgDiv.appendChild(img);   
-                        }
+            if(outInfo != undefined){
+                 const pOut = outInfo["process"];
+                    for(let c in pOut){
+                        addEvent(ch[1]);
+                        const textA = document.querySelectorAll('.pasteInput')[c];
+                        const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                        const div= textA.parentNode;
+                        div.id="/FineManual/"+clientName+"/out/process/"+c;
+                        textA.value=pOut[c]["contents"];
+                        if(pIn[c]["img"]=="No Image"){
+                            imgDiv.innerHTML="No Image";}else{
+                             img = document.createElement('img');
+                                img.src=pIn[c]["img"];
+                                imgDiv.appendChild(img);   
+                            }
+                    }
                 }
-            }catch (e) {
-                console.log(e);
-                if (e.code === 403) {
-                    console.error('Permission error: ', e.message);
-                } else {
-                    console.error('An unexpected error occurred: ', e);
-                }
+            if(adjInfo !=undefined){
+                    const pAdj = adjInfo["process"];
+                    for(let c in pAdj){
+                        addEvent(ch[2]);
+                        const textA = document.querySelectorAll('.pasteInput')[c];
+                        const imgDiv = document.querySelectorAll('.pasteArea')[c];
+                        const div= textA.parentNode;
+                        div.id="/FineManual/"+clientName+"/adj/process/"+c;
+                        textA.value=pAdj[c]["contents"];
+                        if(pIn[c]["img"]=="No Image"){
+                            imgDiv.innerHTML="No Image";}else{
+                             img = document.createElement('img');
+                                img.src=pIn[c]["img"];
+                                imgDiv.appendChild(img);   
+                            }
+                    }
             }    
-            try{
-                const pAdj = adjInfo["process"];
-                for(let c in pAdj){
-                    addEvent(ch[2]);
-                    const textA = document.querySelectorAll('.pasteInput')[c];
-                    const imgDiv = document.querySelectorAll('.pasteArea')[c];
-                    const div= textA.parentNode;
-                    div.id="/FineManual/"+clientName+"/adj/process/"+c;
-                    textA.value=pAdj[c]["contents"];
-                    if(pIn[c]["img"]=="No Image"){
-                        imgDiv.innerHTML="No Image";}else{
-                         img = document.createElement('img');
-                            img.src=pIn[c]["img"];
-                            imgDiv.appendChild(img);   
-                        }
-                }
-            }catch (e) {
-                console.log(e);
-                if (e.code === 403) {
-                    console.error('Permission error: ', e.message);
-                } else {
-                    console.error('An unexpected error occurred: ', e);
-                }
-            }    
+           
             
         }    
         processTable();
