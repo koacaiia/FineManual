@@ -127,11 +127,7 @@ function addEvent(e){
                 }
             }
         });
-    // td.setAttribute('draggable', true); // Make the td draggable
-    // td.addEventListener('dragstart', handleDragStart);
-    // td.addEventListener('dragover', handleDragOver);
-    // td.addEventListener('drop', handleDrop);
-    
+  
 }
 
 function delEvent(){
@@ -420,4 +416,19 @@ function returnTime(){
             tr.insertBefore(draggedTd, targetTd);
         }
     }
+}
+function moveTd(e){
+    const td = document.querySelectorAll('td ');
+    td.forEach((e)=>{
+        e.classList.toggle("tdMove");
+        if(e.classList.contains("tdMove")){
+            e.setAttribute('draggable', true);
+            e.addEventListener('dragstart', handleDragStart);
+            e.addEventListener('dragover', handleDragOver);
+            e.addEventListener('drop', handleDrop);}
+        else{e.setAttribute('draggable', false);
+            e.removeEventListener('dragstart', handleDragStart);
+            e.removeEventListener('dragover', handleDragOver);
+            e.removeEventListener('drop', handleDrop);}
+    })
 }  
