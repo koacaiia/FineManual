@@ -286,8 +286,8 @@ function searchInit(){
         for(let i=0;i<basicInput.length;i++){
                     basicInput[i].value=basicInfo[biList[i]];
         }
+        const infoIn = Object.values(inInfo["manager"]);
             try{
-            const infoIn = Object.values(inInfo["manager"]);
             for(let j=0;j<inInput.length;j++){
                 inInput[j].value=infoIn[j];
             }}catch (e) {
@@ -296,14 +296,24 @@ function searchInit(){
             try{
                 const infoOut = Object.values(outInfo["manager"]);
                 for(let k=0;k<outInput.length;k++){
-                    outInput[k].value=infoOut[k];
+                    if(infoOut[k]==""||infoOut[k]==undefined){
+                        outInput[k].value=infoIn[k];
+                    }else{
+                        outInput[k].value=infoOut[k];
+                    }
+                    
                 }}catch (e) {
                     console.log(e);
                 }
             try{
                 const infoAdj = Object.values(adjInfo["manager"]);
-            for(let l=0;l<adjInput.length;l++){
-                inInput[l].value=infoAdj[l];
+                for(let l=0;l<adjInput.length;l++){
+                    if(infoAdj[l]==""||infoAdj[l]==undefined){
+                        adjInput[l].value=infoIn[l];
+                    }else{
+                        adjInput[l].value=infoAdj[l];
+                    }
+                  
             }}catch (e) {
                 console.log(e);
             }    
